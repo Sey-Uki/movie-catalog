@@ -3,25 +3,17 @@ import styles from "./Main.module.css";
 import { StarOutlined, HeartOutlined } from "@ant-design/icons";
 import { Modal, Card, Rate } from "antd";
 import { useState, useEffect } from "react";
+import { getCards } from "../../store/slices/cards";
+import { useAppDispatch, useAppSelector } from "../../store";
 
 const { Meta } = Card;
 
-interface IMovie {
-  id: number;
-  name: string;
-  description: string;
-  src: string;
-}
-
 export const Main = () => {
-  const [movie, setMovies] = useState<IMovie[]>([]);
+  const movies = useAppSelector((state) => state.cards.cards);
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    fetch("https://run.mocky.io/v3/f41356c2-e1ee-4fe3-aad7-62e2c5bb68a4")
-      .then((res) => res.json())
-      .then((res) => {
-        setMovies(res.data);
-      });
-  }, []);
+    dispatch(getCards());
+  }, [dispatch]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -39,7 +31,7 @@ export const Main = () => {
 
   return (
     <div className={styles.main}>
-      {movie?.map((movie: any) => {
+      {movies?.map((movie: any) => {
         return (
           <div className={styles.card} key={movie.id}>
             <Card
