@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./Main.module.css";
-import { StarOutlined, HeartOutlined } from "@ant-design/icons";
+import { StarOutlined, HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { Modal, Card, Rate } from "antd";
 import { useState, useEffect } from "react";
-import { getCards } from "../../store/slices/cards";
+import { getCards, likeFilm } from "../../store/slices/cards";
 import { useAppDispatch, useAppSelector } from "../../store";
 
 const { Meta } = Card;
@@ -38,8 +38,20 @@ export const Main = () => {
               style={{ width: 300 }}
               cover={<img alt="example" src={movie.src} />}
               actions={[
-                <StarOutlined key="start" onClick={showModal} />,
-                <HeartOutlined key="heart" />,
+                <a href="#" onClick={showModal}>
+                  <Rate key="start" count={1} allowHalf defaultValue={0.5} />
+                </a>,
+                movie.like ? (
+                  <HeartFilled
+                    key="heart"
+                    onClick={() => dispatch(likeFilm(movie.id))}
+                  />
+                ) : (
+                  <HeartOutlined
+                    key="heart"
+                    onClick={() => dispatch(likeFilm(movie.id))}
+                  />
+                ),
               ]}
             >
               <Meta
@@ -55,14 +67,14 @@ export const Main = () => {
               onCancel={handleCancel}
             >
               <div>
-                <div>Сценарий:</div> <Rate />
+                <div>Сценарий:</div> <Rate allowHalf />
               </div>
               <div>
                 <div>Актерское мастерство:</div>
-                <Rate />
+                <Rate allowHalf />
               </div>
               <div>
-                <div>Операторская работа:</div> <Rate />
+                <div>Операторская работа:</div> <Rate allowHalf />
               </div>
             </Modal>
           </div>

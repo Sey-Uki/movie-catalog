@@ -5,6 +5,8 @@ export interface IMovie {
   name: string;
   description: string;
   src: string;
+  like: boolean;
+  rates: any;
 }
 
 type MovieState = {
@@ -27,13 +29,39 @@ export const getCards = createAsyncThunk<IMovie[]>(
 
 export const cards = createSlice({
   name: "cards",
-  initialState: initialState,
-  reducers: {},
+  initialState,
+  reducers: {
+    likeFilm: (state, action) => {
+      const id = action.payload;
+      state.cards = [...state.cards].map((card) => {
+        if (card.id === id) {
+          return {
+            ...card,
+            like: !card.like,
+          };
+        }
+        return card;
+      });
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getCards.fulfilled, (state, action) => {
-      state.cards = action.payload;
+      const copyCards = [
+        ...action.payload.map((item) => {
+          item.like = false;
+          item.rates = {
+            filmscript: 0,
+            acting: 0,
+            operator: 0,
+          };
+          return item;
+        }),
+      ];
+      state.cards = copyCards;
     });
   },
 });
+
+export const { likeFilm } = cards.actions;
 
 export const cardsReducer = cards.reducer;
