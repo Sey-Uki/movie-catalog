@@ -1,4 +1,11 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+export interface IRate {
+  filmscript: number;
+  acting: number;
+  operator: number;
+  average: number;
+}
 
 export interface IMovie {
   id: number;
@@ -6,7 +13,7 @@ export interface IMovie {
   description: string;
   src: string;
   like: boolean;
-  rates: any;
+  rates: IRate;
 }
 
 type MovieState = {
@@ -43,6 +50,25 @@ export const cards = createSlice({
         return card;
       });
     },
+
+    retesFilm: (state, { payload }: PayloadAction<IMovie>) => {
+      const { id, rates } = payload;
+
+      const { filmscript, operator, acting } = rates;
+
+      state.cards = [...state.cards].map((card) => {
+        if (card.id === id) {
+          return {
+            ...card,
+            rates: {
+              ...rates,
+              average: (filmscript + operator + acting) / 3,
+            },
+          };
+        }
+        return card;
+      });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getCards.fulfilled, (state, action) => {
@@ -53,6 +79,7 @@ export const cards = createSlice({
             filmscript: 0,
             acting: 0,
             operator: 0,
+            average: 0,
           };
           return item;
         }),
@@ -62,6 +89,6 @@ export const cards = createSlice({
   },
 });
 
-export const { likeFilm } = cards.actions;
+export const { likeFilm, retesFilm } = cards.actions;
 
 export const cardsReducer = cards.reducer;
