@@ -1,18 +1,20 @@
 import React from "react";
-import logo from "./logo.svg";
+import { BrowserRouter } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./App.css";
-import { Main } from "./pages/Main/Main";
 import { MenuComponents } from "./components/Menu";
+import { AppRoutes } from "./AppRoutes";
 
 function App() {
   return (
-    <div className="App">
-      <div className="components">
-        <MenuComponents />
-        <Main />
+    <BrowserRouter>
+      <div className="App">
+        <div className="components">
+          <MenuComponents />
+          <AppRoutes />
+        </div>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 

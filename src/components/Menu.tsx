@@ -2,6 +2,7 @@ import React from "react";
 import { MenuFoldOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
+import { Link } from "react-router-dom";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -23,20 +24,16 @@ function getItem(
 
 const items: MenuProps["items"] = [
   getItem("Menu", "sub1", <MenuFoldOutlined />, [
-    getItem("Главная", "g1", null),
-    getItem("Избранное", "g2", null),
-    getItem("Оцененные", "g3", null),
+    getItem("Главная", "g1", <Link to="/" />),
+    getItem("Избранное", "g2", <Link to="/favorites" />),
+    getItem("Оцененные", "g3", <Link to="/rated" />),
   ]),
 ];
 
 export const MenuComponents = () => {
-  const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
-  };
   return (
     <div className="menu">
       <Menu
-        onClick={onClick}
         style={{ width: 256 }}
         defaultSelectedKeys={["g1"]}
         mode="inline"
