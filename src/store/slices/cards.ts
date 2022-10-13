@@ -22,7 +22,7 @@ type MovieState = {
 };
 
 const initialState: MovieState = {
-  list: [],
+  list: JSON.parse(localStorage.getItem("dataMovies")!) || [],
 };
 
 export const getCards = createAsyncThunk<IMovie[]>(
@@ -50,6 +50,8 @@ export const cards = createSlice({
         }
         return card;
       });
+
+      localStorage.setItem('dataMovies', JSON.stringify(state.list))
     },
 
     retesFilm: (state, { payload }: PayloadAction<IMovie>) => {
@@ -69,6 +71,8 @@ export const cards = createSlice({
         }
         return card;
       });
+
+      localStorage.setItem('dataMovies', JSON.stringify(state.list))
     },
   },
   extraReducers: (builder) => {
