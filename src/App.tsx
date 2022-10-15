@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import "antd/dist/antd.css";
 import "./App.css";
-import { MenuComponents } from "./components/Menu";
+import { Navigation } from "./components/Navigation";
 import { AppRoutes } from "./AppRoutes";
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <div className="components">
-          <MenuComponents />
+          <Navigation />
           <AppRoutes />
         </div>
       </div>

@@ -1,28 +1,35 @@
 import { useEffect } from "react";
-import { getCards, IMovie, selectMovies } from "../../store/slices/cards";
+import { getCards, MovieItem, selectMovies } from "../../store/slices/cards";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { CardComponent } from "../../components/Card";
+import { MovieCard } from "../../components/MovieCard";
+import { Skeleton } from "antd";
 
 export const Main = () => {
   const movies = useAppSelector(selectMovies);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(movies.length);
     if (movies?.length) return;
 
     dispatch(getCards());
   }, [dispatch, movies.length]);
 
-  return (
-    <div className="main">
-      {movies?.map((movie: IMovie) => {
-        return (
-          <div className="card" key={movie.id}>
-            <CardComponent movie={movie} />
-          </div>
-        );
-      })}
-    </div>
-  );
+  const cards = movies.map((movie: MovieItem) => {
+    return (
+      <div className="card" key={movie.id}>
+        <MovieCard movie={movie} />
+      </div>
+    );
+  });
+
+  const skeletons = Array.from(new Array(8)).map((_, i) => {
+    return (
+      <div key={i} className="card skeleton">
+        <Skeleton.Image active />
+        <Skeleton active />
+      </div>
+    );
+  });
+
+  return <div className="main">{movies.length ? cards : skeletons}</div>;
 };
